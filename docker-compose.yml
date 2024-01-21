@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+    image: docker-deo-app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: fidex
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: deoclecio.steinheuser@mail.com
+      PGADMIN_DEFAULT_PASSWORD: deo
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
