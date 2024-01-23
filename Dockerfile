@@ -22,7 +22,7 @@ COPY composer.json composer.lock ./
 RUN composer install --no-scripts --no-autoloader
 
 # Copy the rest of the application code
-COPY . .
+COPY . /var/www/
 
 # Generate the autoload files
 RUN composer dump-autoload --optimize

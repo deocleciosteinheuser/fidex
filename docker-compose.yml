@@ -11,7 +11,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - .:/app
+      - .:/var/www/
     depends_on:
       - postgres
 
@@ -20,7 +20,7 @@ services:
     environment:
       POSTGRES_DB: fidex
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: Deo
     ports:
       - "5432:5432"
 
