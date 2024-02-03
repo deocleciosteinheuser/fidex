@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('usuario_unidade', function (Blueprint $table) {
             $table->unsignedInteger('usuid');
-            $table->foreign('usuid')->references('id')->on('usuario');
+            $table->foreign('usuid')->references('id')->on('users');
             $table->unsignedInteger('uniid');
             $table->foreign('uniid')->references('id')->on('unidade');
             $table->primary(['usuid', 'uniid']);
@@ -29,7 +29,7 @@ return new class extends Migration
         Schema::table('usuario_unidade', function (Blueprint $table) {
             $table->dropForeign('usuario_unidade_usuid_foreign');
             $table->dropForeign('usuario_unidade_uniid_foreign');
-        });        
+        });
 
         Schema::dropIfExists('usuario_unidade');
     }

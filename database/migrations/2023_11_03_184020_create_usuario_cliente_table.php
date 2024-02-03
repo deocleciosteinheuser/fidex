@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedInteger('usuid');
             $table->unsignedInteger('cliid');
             $table->primary(['usuid', 'cliid']);
-            $table->foreign('usuid')->references('id')->on('usuario');
+            $table->foreign('usuid')->references('id')->on('users');
             $table->foreign('cliid')->references('id')->on('cliente');
             $table->timestamps();
         });

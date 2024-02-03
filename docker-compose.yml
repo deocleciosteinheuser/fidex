@@ -7,6 +7,12 @@ services:
       dockerfile: Dockerfile
     environment:
       - COMPOSER_ALLOW_SUPERUSER=1
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=fidex
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=Deo
     image: docker-deo-app
     ports:
       - "8080:80"
@@ -14,6 +20,8 @@ services:
       - .:/var/www/
     depends_on:
       - postgres
+    networks:
+      - fidex
 
   postgres:
     image: postgres:latest
@@ -23,6 +31,10 @@ services:
       POSTGRES_PASSWORD: Deo
     ports:
       - "5432:5432"
+    networks:
+      - fidex
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
@@ -33,3 +45,10 @@ services:
       - "5050:80"
     depends_on:
       - postgres
+    networks:
+      - fidex
+
+networks:
+  fidex:
+volumes:
+  postgres_data:

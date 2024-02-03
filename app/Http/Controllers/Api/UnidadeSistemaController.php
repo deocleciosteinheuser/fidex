@@ -66,7 +66,7 @@ class UnidadeSistemaController extends Controller
                 ]),[
                     'nome' => $oDados->cliente_nome,
                 ]);
-    
+
             } else {
                 //se não tiver cliente replica a unidade
                 $oCliente = Cliente::updateOrCreate(array_filter([
@@ -75,11 +75,11 @@ class UnidadeSistemaController extends Controller
                 ]),[
                     'nome' => $oDados->unidade_nome,
                 ]);
-    
+
             }
             $oModeloAtendimento = ModeloAtendimento::updateOrCreate([
                 'nome' => $oDados->modelo_atendimento_nome,
-            ]);            
+            ]);
             $oUnidade = Unidade::updateOrCreate(array_filter([
                 'id' => isset($oDados->unidade_id)? $oDados->unidade_id: null,
                 'nome' => isset($oDados->unidade_id) ? null : $oDados->unidade_nome,
@@ -102,12 +102,6 @@ class UnidadeSistemaController extends Controller
                 'nome' => isset($oDados->pessoa_id) ? null : (isset($oDados->pessoa_nome) ? $oDados->pessoa_nome : $oDados->cs),
             ]);
 
-            $oUsuario = User::updateOrCreate(array_filter([
-                'pesid' => $oPessoa->id,
-            ]),[
-            ]);
-
-
             $aUnidade[] = new UnidadeSistemaResource(
                 UnidadeSistema::updateOrCreate([
                     'uniid' => $oUnidade->id,
@@ -115,11 +109,11 @@ class UnidadeSistemaController extends Controller
                 ],[
                     'mrr' => $oDados->mrr,
                     'serid' => $oServidor->id,
-                    'usuid' => $oUsuario->id,
+                    'pesid' => $oPessoa->id,
                 ])
             );
-            
-        }    
+
+        }
         return response()->json($aUnidade, Response::HTTP_CREATED);
     }
 

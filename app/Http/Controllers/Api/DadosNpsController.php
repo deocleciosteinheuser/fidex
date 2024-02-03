@@ -21,6 +21,7 @@ use App\Models\Sistema;
 use App\Models\Unidade;
 use App\Models\UnidadeSistema;
 use Database\Seeders\PessoaSeeder;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -44,19 +45,19 @@ class DadosNpsController extends Controller
     public function store(StoreUpdateDadosNpsRequest $request)
     {
         //$oPessoa = Pessoa::create($request->validated());
-        $aDados = (new DadosNpsResource($request))->toArray($request);    
+        $aDados = (new DadosNpsResource($request))->toArray($request);
         DB::beginTransaction();
         $oPesquisa = NpsPesquisa::updateOrCreate([
             'periodo' => $aDados['pesquisa']['periodo'],
-        ],[       
+        ],[
             'datainicio' => $aDados['pesquisa']['data_inicio'],
         ]);
 
         foreach($aDados['pesquisa']['dados'] as $index => $oDados) {
             $oDados = (object) $oDados;
-            
+
             if(!isset($oGrupo) || $oGrupo->nome != $oDados->grupo_nome) {
-                    $oGrupo = Grupo::updateOrCreate([
+                $oGrupo = Grupo::updateOrCreate([
                     'nome' => $oDados->grupo_nome,
                 ]);
             }
@@ -77,7 +78,7 @@ class DadosNpsController extends Controller
                 ]);
             }
             if(!isset($oUnidade) || $oUnidade->id != $oDados->unidade_id) {
-                $oUnidade = Unidade::find($oDados->unidade_id);            
+                $oUnidade = Unidade::find($oDados->unidade_id);
             }
             if(!isset($oServidor) || $oServidor->nome != $oDados->servidor_nome) {
                 $oServidor = Servidor::updateOrCreate([
@@ -114,15 +115,15 @@ class DadosNpsController extends Controller
             ]
             );
 
-            $oPesquisaUsuario = NpsPesquisaUsuario::create([    
+            $oPesquisaUsuario = NpsPesquisaUsuario::create([
                 'npuid' => $oPesquisaUnidadeSistema->id,
             ]);
             $oResp = NpsResposta::create([
                 'npuid'     => $oPesquisaUsuario->id,
-                'data'      => $oDados->resposta_data,
+                'data'      => DateTime::createFromFormat('d/m/y H:i', $oDados->resposta_data)->format('Y-m-d H:i'),
                 'npsnota'   => $oDados->resposta_nota,
-                'descricao' => $oDados->resposta_descricao,      
-                'catid'     => $oCategoria->id,          
+                'descricao' => $oDados->resposta_descricao,
+                'catid'     => $oCategoria->id,
             ]);
 
             NpsFeedback::create([
@@ -130,7 +131,7 @@ class DadosNpsController extends Controller
                 'descricao' => isset($oDados->descricao) ? $oDados->descricao : '',
                 'visto' => Str::lower($oDados->feedback_visto) == 'sim',
                 'util'  => Str::lower($oDados->feedback_util) == 'sim',
-                'usuid' => $oUnidadeSistema->usuid,
+                'pesid' => $oUnidadeSistema->pesid,
             ]);
         }
         DB::commit();

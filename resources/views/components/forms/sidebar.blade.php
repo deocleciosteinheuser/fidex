@@ -16,7 +16,12 @@
                                 <li class="w-100">
                                     <a href="{{ route($subItem['route']) }}" class="nav-link px-0"> <span class="d-none d-sm-inline">{{$subItem['title']}}</span> </a>
                                 </li>
-                            @endforeach                             
+                            @endforeach
+                            @foreach($dashboard as $key => $subItem)
+                                <li class="w-100">
+                                    <a href="#" onclick="loadPage('{{ route($subItem['route']) }}')" class="nav-link px-0"> <span class="d-none d-sm-inline">{{$subItem['title']}}</span> </a>
+                                </li>
+                            @endforeach
                         </ul>
                     </li>
                     <li>
@@ -28,7 +33,7 @@
                                 <li class="w-100">
                                     <a href="{{ route($subItem['route']) }}" class="nav-link px-0"> <span class="d-none d-sm-inline">{{$subItem['title']}}</span> </a>
                                 </li>
-                            @endforeach                             
+                            @endforeach
                         </ul>
                     </li>
                     <li>
@@ -53,4 +58,3 @@
                     </ul>
                 </div>
 </div>
-                                      

@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('nps_feedback', function (Blueprint $table) {
             $table->id('npuid');
             $table->foreign('npuid')->references('id')->on('nps_pesquisa_usuario');
-            $table->string('descricao');            
+            $table->string('descricao');
             $table->boolean('util');
             $table->boolean('visto');
-            $table->integer('usuid');
-            $table->foreign('usuid')->references('id')->on('usuario');
+            $table->integer('pesid');
+            $table->foreign('pesid')->references('id')->on('pessoa');
             $table->timestamps();
         });
     }
@@ -30,8 +30,8 @@ return new class extends Migration
     {
         Schema::table('nps_feedback', function (Blueprint $table) {
             $table->dropForeign('nps_feedback_npuid_foreign');
-            $table->dropForeign('nps_feedback_usuid_foreign');
-        });              
+            $table->dropForeign('nps_feedback_pesid_foreign');
+        });
         Schema::dropIfExists('nps_feedback');
     }
 };

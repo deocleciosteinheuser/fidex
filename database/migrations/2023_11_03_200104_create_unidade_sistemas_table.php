@@ -19,8 +19,8 @@ return new class extends Migration
             $table->primary(['uniid','sisid']);
             $table->unsignedInteger('serid')->nullable();
             $table->foreign('serid')->references('id')->on('servidor');
-            $table->unsignedInteger('usuid')->nullable();
-            $table->foreign('usuid')->references('id')->on('usuario');
+            $table->unsignedInteger('pesid')->nullable();
+            $table->foreign('pesid')->references('id')->on('pessoa');
             $table->float('mrr', 10, 5);
             $table->boolean('ativo')->default(true);
             $table->timestamps();
@@ -36,7 +36,7 @@ return new class extends Migration
             $table->dropForeign('unidade_sistema_uniid_foreign');
             $table->dropForeign('unidade_sistema_sisid_foreign');
             $table->dropForeign('unidade_sistema_serid_foreign');
-            $table->dropForeign('unidade_sistema_usuid_foreign');
+            $table->dropForeign('unidade_sistema_pesid_foreign');
         });
 
         Schema::dropIfExists('unidade_sistema');
