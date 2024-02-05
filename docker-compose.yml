@@ -1,10 +1,11 @@
 version: '3'
 
 services:
+  # fidex
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: app.dockerfile
     environment:
       - COMPOSER_ALLOW_SUPERUSER=1
       - DB_CONNECTION=pgsql
@@ -47,6 +48,13 @@ services:
       - postgres
     networks:
       - fidex
+
+  npm:
+    image: node:14
+    working_dir: /var/www
+    entrypoint: ["npm"]
+    volumes:
+        - .:/var/www/
 
 networks:
   fidex:

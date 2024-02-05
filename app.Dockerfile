@@ -27,8 +27,14 @@ COPY . /var/www/
 # Generate the autoload files
 RUN composer dump-autoload --optimize
 
+# insltar npm
+RUN apt-get update
+
+RUN apt-get install -y nodejs npm
+
 # Expose port 80 for the web server
 EXPOSE 80
+
 
 # Specify the command to run on container start
 CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]

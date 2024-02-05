@@ -1,2 +1,4 @@
 import './bootstrap';
-import './loadpage';
+import jQuery from 'jquery';
+window.$ = jQuery;
+import { loadPage } from './loadpage.js';
