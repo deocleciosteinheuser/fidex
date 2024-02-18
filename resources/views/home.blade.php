@@ -5,6 +5,8 @@
 @endsection
 
 @section('content')
-<h1> Home </h1>    
+    @component('components/dashboard-score')
+    @endcomponent
+
 @endsection
 

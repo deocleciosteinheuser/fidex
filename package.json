@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "asynckit": "^0.4.0",
+    "bootstrap": "^5.3.2",
     "combined-stream": "^1.0.8",
     "delayed-stream": "^1.0.0",
     "esbuild": "^0.19.12",

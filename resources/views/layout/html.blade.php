@@ -14,29 +14,36 @@
     @yield('styles')
 
 </head>
-<body>
-    <header class="navbar navbar-white sticky-top flex-md-nowrap p-0 shadow">
-        @yield('navbar')
-    </header>
-    <div class="container-fluid">
-        <div class="row">
-            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                @yield('sidebar')
-            </nav>
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div class="container pt-4">
-
-                    <!--Section: consulta-->
-                    <section class="mb-4">
-                            <div class="content" id="page-content" >@yield('content')</div>
-                    </section>
+<body class="d-flex flex-column h-100">
+    <main>
+        <header class="navbar navbar-white sticky-top flex-md-nowrap p-0 shadow">
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Fidex</a>
+            <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+            <div class="navbar-nav">
+            <div class="nav-item text-nowrap">
+                <a class="nav-link px-3" href="#">Sign out</a>
+            </div>
+            </div>
+        </header>
+        <div class="d-flex justify-content-start">
+            <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" >
+                <div class="position-sticky pt-3">
+                    @yield('sidebar')
                 </div>
-            </main>
+            </div>
+            <div class="d-flex flex-wrap">
+                @yield('content')
+            </div>
         </div>
-    </div>
-    <footer class="container fixed-bottom">
-        <p class="float-end"><a href="#">Back to top</a></p>
-        <p>© <a href="https://github.com/deocleciosteinheuser">Deoclecio steinheuser</a> - 2023.</p>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <p><a href="#">Back to top</a></p>
+            <p>© <a href="https://github.com/deocleciosteinheuser" class="text-black">Deoclecio steinheuser</a> - 2023.</p>
+        </div>
     </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -44,6 +51,5 @@
 
     <script src="{{ asset('js/app.js') }}"></script>
     @yield('scripts')
-
 </body>
 </html>

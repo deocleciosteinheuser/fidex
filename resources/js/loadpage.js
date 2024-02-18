@@ -1,10 +1,10 @@
 
-    window.loadPage = (sUrl) => {
+    window.loadPage = (sUrl, sIdComponente = '#page-content') => {
         $.ajax({
             url: sUrl,
             type: 'GET',
             success: function(response) {
-                $('#page-content').html(response);
+                $(sIdComponente).html(response);
                 history.pushState({}, '', sUrl)
             },
             error: function(xhr, status, error) {

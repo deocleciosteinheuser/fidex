@@ -1,12 +1,9 @@
 @extends('layout/html')
 
-@section('navbar')
-    @include('components/forms.navbar', ['navbar' => \App\Http\Controllers\AppController::listMenu()['navbar']]) 
-@endsection
-
 @section('sidebar')
     @include('components/forms.sidebar', [
         'consultas' => \App\Http\Controllers\ConsultaController::agrupadores(),
+        'customers' => App\Models\Pessoa::all('nome'),
         'dashboard' => [
             [
                 'route' => 'dashboard.nps',
@@ -16,7 +13,7 @@
                 'route' => 'dashboard.mrr',
                 'title' => 'MRR',
             ],
-        ]        
+        ]
     ])
 @endsection
 

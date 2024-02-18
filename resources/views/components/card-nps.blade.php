@@ -1,7 +1,5 @@
 <div class="card text-black bg-light" style="max-width: 21rem;">
-    <div class="card-header">
-        <span class="badge text-dark fs-4">{{ $username }}</span>
-    </div>
+    <h5 class="card-header">{{ $username }}</h5>
     <div class="card-body">
         <table class="table-light text-black bg-light" style="max-width: 28rem;">
             <tbody>

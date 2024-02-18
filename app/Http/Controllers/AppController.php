@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\app;
+use App\Models\Pessoa;
 use Illuminate\Http\Request;
 
 class AppController extends Controller
@@ -12,7 +13,7 @@ class AppController extends Controller
      */
     public function index()
     {
-        return view('home');    
+        return view('home', $this->listMenu());
     }
 
     public static function listMenu() {
@@ -24,15 +25,18 @@ class AppController extends Controller
                 ],
                 'lista' => [
                     [
-                        'route' => 'home', 
+                        'route' => 'home',
                         'title' => 'Home',
                     ],
                     [
-                        'route' => 'consultas', 
+                        'route' => 'consultas',
                         'title' => 'Consultas',
                         'lista' => ConsultaController::agrupadores()
                     ],
-                ], 
+                ],
+                'users' => [
+                    Pessoa::all()
+                ]
             ]
         ];
     }

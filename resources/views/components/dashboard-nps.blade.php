@@ -1,16 +1,14 @@
 @extends('layout/app')
 
 @section('title')
-    NPS
+    {{$agrupador['title']}}
 @endsection
 
 @section('content')
-
-@php
-$aDados = (new \App\Http\Controllers\ConsultaUsuarioController())->json();
-@endphp
-
 <div class="d-flex flex-wrap">
+    @php
+        if(!isset($aDados)) $aDados = (new \App\Http\Controllers\ConsultaUsuarioController())->json();
+    @endphp
     @foreach ($aDados as $key => $oDado)
         <x-card-nps
             username="{{ $oDado->agrupador }}"
@@ -26,4 +24,5 @@ $aDados = (new \App\Http\Controllers\ConsultaUsuarioController())->json();
         />
     @endforeach
 </div>
+
 @endsection

@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class ConsultaController extends Controller
 {
+    private $order = [];
+    private $limit = 0;
+
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +36,7 @@ class ConsultaController extends Controller
         return $aReturn;
     }
 
-    public function dados($tipo) {        
+    public function dados($tipo) {
         switch($tipo) {
             case 'json' :
                 return $this->json();
@@ -45,7 +48,12 @@ class ConsultaController extends Controller
      * @return string
      */
     protected function getSqlDados() {
-        return '';       
+        return "
+            SELECT
+                   'score' AS agrupador,
+                   nps_resposta.npsnota
+              FROM nps_resposta
+            ";
     }
 
     public function json() {
@@ -53,7 +61,7 @@ class ConsultaController extends Controller
         WITH parametros AS (
              SELECT ARRAY[9,10] AS nota_promotor,
                     ARRAY[7,8] AS nota_neutro,
-                    ARRAY[6,5,4,3,2,1,0] AS nota_detrator	       
+                    ARRAY[6,5,4,3,2,1,0] AS nota_detrator
              ),
              dados AS (
                 ' . $this->getSqlDados() . '
@@ -61,13 +69,13 @@ class ConsultaController extends Controller
              dados_agrupados AS (
                  SELECT
                         dados.agrupador,
-                        COUNT(*) FILTER(WHERE dados.npsnota = any(parametros.nota_promotor))::numeric AS respostas_promotor, 
-                        COUNT(*) FILTER(WHERE dados.npsnota = any(parametros.nota_neutro))::numeric AS respostas_neutro, 
+                        COUNT(*) FILTER(WHERE dados.npsnota = any(parametros.nota_promotor))::numeric AS respostas_promotor,
+                        COUNT(*) FILTER(WHERE dados.npsnota = any(parametros.nota_neutro))::numeric AS respostas_neutro,
                         COUNT(*) FILTER(WHERE dados.npsnota = any(parametros.nota_detrator))::numeric AS respostas_detrator,
                         COUNT(*)::numeric AS respostas
                    FROM dados
              CROSS JOIN parametros
-               GROUP BY dados.agrupador	
+               GROUP BY dados.agrupador
              ),
              calculo as (
                  SELECT
@@ -76,15 +84,15 @@ class ConsultaController extends Controller
                         respostas_neutro,
                         respostas_detrator,
                         respostas,
-                         ROUND(respostas_promotor / respostas * 100, 0) percentual_promotor,
-                         ROUND(respostas_neutro / respostas * 100)::numeric(10,0) percentual_neutro,
-                         ROUND(respostas_detrator / respostas * 100)::numeric(10,0) percentual_detrator,
-                         ROUND(ROUND(respostas_promotor / respostas * 100, 0) - ROUND(respostas_detrator / respostas * 100, 0), 0) AS nota_nps,
-                         ROUND((respostas / SUM(respostas) OVER()) * 100, 0) AS percentual_nps
+                        ROUND(respostas_promotor / respostas * 100, 0) percentual_promotor,
+                        ROUND(respostas_neutro / respostas * 100)::numeric(10,0) percentual_neutro,
+                        ROUND(respostas_detrator / respostas * 100)::numeric(10,0) percentual_detrator,
+                        ROUND(ROUND(respostas_promotor / respostas * 100, 0) - ROUND(respostas_detrator / respostas * 100, 0), 0) AS nota_nps,
+                        ROUND((respostas / SUM(respostas) OVER()) * 100, 0) AS percentual_nps
                    FROM dados_agrupados
              )
-          
-        SELECT         
+
+        SELECT
                agrupador,
                percentual_promotor AS promotor,
                percentual_neutro AS neutro,
@@ -94,56 +102,29 @@ class ConsultaController extends Controller
                respostas_promotor,
                respostas_neutro,
                respostas_detrator,
-               respostas AS total_resposta              
-         FROM calculo        
-        ');        
+               respostas AS total_resposta
+         FROM calculo
+         ' . $this->getOrder() . '
+         ' . $this->getLimit() . '
+
+        ');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function order(...$sOrder) {
+        $this->order = $sOrder;
+        return $this;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function limit($iLimit = 0) {
+        $this->limit = $iLimit;
+        return $this;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        return $this->json();
+    protected function getOrder() {
+        return count($this->order) ? 'ORDER BY ' . implode($this->order) : '';
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    protected function getLimit() {
+        return $this->limit ? 'limit ' . $this->limit : '';
     }
 }

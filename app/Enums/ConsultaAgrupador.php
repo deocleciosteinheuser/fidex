@@ -4,7 +4,7 @@ namespace App\Enums;
 use PhpParser\Node\Stmt\Switch_;
 
 enum ConsultaAgrupador {
-        
+
     case USUARIO;
     case SERVIDOR;
     case CATEGORIA;
@@ -12,7 +12,7 @@ enum ConsultaAgrupador {
     case SISTEMA;
     case CLIENTE;
     case UNIDADE;
-    case GEO;        
+    case GEO;
 
     public static function all() {
         return [
@@ -31,56 +31,56 @@ enum ConsultaAgrupador {
         switch($tipo) {
             case static::USUARIO :
                 return [
-                    'route' => 'consultas.usuario',
+                    'route' => 'usuario',
                     'title' => 'Usuário',
                     'field' => 'usucid',
                 ];
                 break;
             case static::SERVIDOR :
                 return [
-                    'route' => 'consultas.servidor',
+                    'route' => 'servidor',
                     'title' => 'Servidor',
                     'field' => 'serid',
                 ];
                 break;
             case static::CATEGORIA :
                 return [
-                    'route' => 'consultas.categoria',
+                    'route' => 'categoria',
                     'title' => 'Categoria',
                     'field' => 'catid',
                 ];
                 break;
             case static::PERIODO :
                 return [
-                    'route' => 'consultas.periodo',
+                    'route' => 'periodo',
                     'title' => 'Periodo',
                     'field' => 'npsperiodo',
                 ];
                 break;
             case static::SISTEMA :
                 return [
-                    'route' => 'consultas.sistema',
+                    'route' => 'sistema',
                     'title' => 'Sistema',
                     'field' => 'sisid',
                 ];
                 break;
             case static::CLIENTE :
                 return [
-                    'route' => 'consultas.cliente',
+                    'route' => 'cliente',
                     'title' => 'Cliente',
                     'field' => 'cliid',
                 ];
                 break;
             case static::UNIDADE :
                 return [
-                    'route' => 'consultas.unidade',
+                    'route' => 'unidade',
                     'title' => 'Unidade',
                     'field' => 'uniid',
                 ];
                 break;
             case static::GEO :
                 return [
-                    'route' => 'consultas.geo',
+                    'route' => 'geo',
                     'title' => 'Geo',
                     'field' => 'geoid',
                 ];
