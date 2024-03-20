@@ -1,0 +1,9 @@
+// Import all of Bootstrap's CSS
+@import "~bootstrap/scss/bootstrap";
+// Import all bootstrap-icons
+$bootstrap-icons-font-dir: '~bootstrap-icons/font/fonts';
+@import "~bootstrap-icons/font/bootstrap-icons";
+// Import all bootstrap-table
+@import "~bootstrap-table/src/bootstrap-table.scss";
+
+@import "~bootstrap-select/sass/bootstrap-select.scss";

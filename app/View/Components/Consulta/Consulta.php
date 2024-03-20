@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\consulta;
+namespace App\View\Components\Consulta;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 
 class Consulta extends Component
 {
-    
+
     public array $agrupador = ['route' => 'semrota', 'title' => 'sem titulo'];
 
     /**

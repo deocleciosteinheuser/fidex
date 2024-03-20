@@ -1,11 +1,12 @@
-const { JSDOM } = require( "jsdom" );
+const { JSDOM } = require('jsdom');
+let jquery  = require('jquery');
+let laravelmix  = require('laravel-mix');
+
 const { window   } = new JSDOM( "<html></html>" );
-$ = require( "jquery" )( window );
-// Import the 'laravel-mix' library
-let mix = require('laravel-mix');
+$ = jquery( window );
 
+laravelmix
 // Compile the JavaScript files and output to 'public/js'
-mix.js('resources/js/app.js', 'public/js')
-
+    .js('resources/js/app.js', 'public/js')
 // Compile the CSS files and output to 'public/scc'
     .css('resources/css/app.css', 'public/css');

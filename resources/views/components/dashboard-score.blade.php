@@ -3,13 +3,7 @@
     @php
         $aDados = (new \App\Http\Controllers\ConsultaController())->json();
     @endphp
-    @php
-        $categorias = [
-            (object)["nome" => "cliente","id" => 1]
-        ];
-    @endphp
-    @component('components.filters', ['categorias' => $categorias])
-    @endcomponent
+
     @foreach ($aDados as $key => $oDado)
         <x-card-score
             header="{{ $oDado->agrupador }}"

@@ -9,6 +9,7 @@ use Illuminate\View\Component;
 class DashboardNps extends Component
 {
     private $aDados;
+    private $oAgrupador;
     /**
      * Create a new component instance.
      */
@@ -22,7 +23,10 @@ class DashboardNps extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.dashboard-nps', ['aDados' => $this->getDados(), 'agrupador' => ['title' => 'deo']]);
+        return view('components.dashboard-nps', [
+            'aDados' => $this->getDados(),
+            'agrupador' => $this->getAgrupador()
+        ]);
     }
 
 
@@ -43,7 +47,26 @@ class DashboardNps extends Component
     public function setDados($aDados)
     {
         $this->aDados = $aDados;
+        return $this;
+    }
 
+
+    /**
+     * Get the value of oAgrupador
+     */
+    public function getAgrupador()
+    {
+        return $this->oAgrupador;
+    }
+
+    /**
+     * Set the value of oAgrupador
+     *
+     * @return  self
+     */
+    public function setAgrupador($oAgrupador)
+    {
+        $this->oAgrupador = $oAgrupador;
         return $this;
     }
 }

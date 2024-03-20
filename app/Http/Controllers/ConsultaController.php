@@ -11,6 +11,7 @@ class ConsultaController extends Controller
 {
     private $order = [];
     private $limit = 0;
+    private $user;
 
     /**
      * Display a listing of the resource.
@@ -51,20 +52,40 @@ class ConsultaController extends Controller
         return "
             SELECT
                    'score' AS agrupador,
+                   pessoa.id AS id,
                    nps_resposta.npsnota
-              FROM nps_resposta
-            ";
+              FROM unidade_sistema
+              JOIN pessoa
+                ON pessoa.id = unidade_sistema.pesid
+              JOIN nps_pesquisa_unidade_sistema
+                ON nps_pesquisa_unidade_sistema.uniid = unidade_sistema.uniid
+               AND nps_pesquisa_unidade_sistema.sisid = unidade_sistema.sisid
+              JOIN nps_pesquisa_usuario
+                ON nps_pesquisa_usuario.npuid = nps_pesquisa_unidade_sistema.id
+              JOIN nps_resposta
+                ON nps_resposta.npuid = nps_pesquisa_usuario.id
+             WHERE TRUE
+        ";
+
     }
 
-    public function json() {
-        return DB::select('
+    public function json($filter = []) {
+        $sFiltro = '';
+        $aValoresFiltro = [];
+        foreach($filter  as $key => $value) {
+            ;
+            $sFiltro .= " AND $key in(" . implode(',',array_map(function(){return '?';}, is_array($value) ? $value : [$value])) . ") \n";
+            $aValoresFiltro = array_values(array_merge($aValoresFiltro, is_array($value) ? $value : [$value]));
+        }
+        return DB::select("
         WITH parametros AS (
              SELECT ARRAY[9,10] AS nota_promotor,
                     ARRAY[7,8] AS nota_neutro,
                     ARRAY[6,5,4,3,2,1,0] AS nota_detrator
              ),
              dados AS (
-                ' . $this->getSqlDados() . '
+                {$this->getSqlDados()}
+                {$sFiltro}
               ),
              dados_agrupados AS (
                  SELECT
@@ -77,16 +98,16 @@ class ConsultaController extends Controller
              CROSS JOIN parametros
                GROUP BY dados.agrupador
              ),
-             calculo as (
+             calculo AS (
                  SELECT
                         dados_agrupados.agrupador,
                         respostas_promotor,
                         respostas_neutro,
                         respostas_detrator,
                         respostas,
-                        ROUND(respostas_promotor / respostas * 100, 0) percentual_promotor,
-                        ROUND(respostas_neutro / respostas * 100)::numeric(10,0) percentual_neutro,
-                        ROUND(respostas_detrator / respostas * 100)::numeric(10,0) percentual_detrator,
+                        ROUND(respostas_promotor / respostas * 100, 0) AS percentual_promotor,
+                        ROUND(respostas_neutro / respostas * 100)::numeric(10,0) AS percentual_neutro,
+                        ROUND(respostas_detrator / respostas * 100)::numeric(10,0) AS percentual_detrator,
                         ROUND(ROUND(respostas_promotor / respostas * 100, 0) - ROUND(respostas_detrator / respostas * 100, 0), 0) AS nota_nps,
                         ROUND((respostas / SUM(respostas) OVER()) * 100, 0) AS percentual_nps
                    FROM dados_agrupados
@@ -103,11 +124,10 @@ class ConsultaController extends Controller
                respostas_neutro,
                respostas_detrator,
                respostas AS total_resposta
-         FROM calculo
-         ' . $this->getOrder() . '
-         ' . $this->getLimit() . '
-
-        ');
+          FROM calculo
+          {$this->getOrder()}
+          {$this->getLimit()}
+        ", $aValoresFiltro);
     }
 
     public function order(...$sOrder) {

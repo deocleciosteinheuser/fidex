@@ -23,6 +23,7 @@ class ConsultaUsuarioController extends ConsultaController
         return '
             SELECT
                    pessoa.nome AS agrupador,
+                   pessoa.id AS id,
                    nps_resposta.npsnota
               FROM unidade_sistema
               JOIN pessoa
@@ -33,7 +34,9 @@ class ConsultaUsuarioController extends ConsultaController
               JOIN nps_pesquisa_usuario
                 ON nps_pesquisa_usuario.npuid = nps_pesquisa_unidade_sistema.id
               JOIN nps_resposta
-                ON nps_resposta.npuid = nps_pesquisa_usuario.id';
+                ON nps_resposta.npuid = nps_pesquisa_usuario.id
+              JOIN geo_localizacao geo ON geo.id = nps_pesquisa_unidade_sistema.geoid
+        ';
     }
 
 }
