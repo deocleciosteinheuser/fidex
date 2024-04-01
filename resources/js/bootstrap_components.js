@@ -6,4 +6,5 @@ import 'tableexport.jquery.plugin';
 import '~bootstrap-table/dist/extensions/defer-url/bootstrap-table-defer-url';
 
 import 'bootstrap-select';
+$.fn.selectpicker.Constructor.DEFAULTS.iconBase='fa';
 import '~bootstrap-select/dist/js/i18n/defaults-pt_BR.min.js';

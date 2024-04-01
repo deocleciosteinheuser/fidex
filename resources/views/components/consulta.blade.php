@@ -17,7 +17,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 @php
-                    $url = route($agrupador['route'] . '.dados', ['dados' => 'json'])
+                    $url = route('dados', ['agrupador' => $agrupador['route'], 'tipo' => 'json'])
                 @endphp
                 <x-consulta.consulta :agrupador="$agrupador" url="{{ $url }}" >
                 </x-consulta.consulta>

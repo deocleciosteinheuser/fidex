@@ -12,12 +12,15 @@
         }
     </style>
     <label for="{{ $id }}">{{ $label }}</label>
-    <select wire:model="{{ isset($wireModel) ? $wireModel : '' }}" name="{{ $name }}[]" id="{{ $id }}" {{$multiple ? 'multiple' : ''}} class="selectpicker"
+    <select
+        wire:model="{{ isset($wireModel) ? $wireModel : '' }}"
+        name="{{ $name }}[]" id="{{ $id }}"
+        {{$multiple ? 'multiple' : ''}}
+        class="selectpicker show-tick"
+        data-live-search="true"
+        data-actions-box="true"
         x-show="$('#{{ $id }}').selectpicker();"
     >
-        @if(isset($todos) && $todos)
-            <option value="">Todos</option>
-        @endif
         @foreach($options as $value => $label)
         <option value="{{ $value }}" {{ isset($selectedValues) && in_array($value, $selectedValues) ? 'selected' : '' }}>{{ $label }}</option>
         @endforeach

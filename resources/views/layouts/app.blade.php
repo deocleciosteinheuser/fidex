@@ -11,16 +11,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite([
-            'resources/css/app.css',
-            'resources/js/jquery.js',
-            'resources/js/bootstrap.js',
-            'resources/js/bootstrap_components.js',
-            'resources/js/app.js',
-        ])
-
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
         <!-- Page link -->
         @if (isset($link))
@@ -30,9 +21,12 @@
 
         <!-- Styles -->
         @livewireStyles
+        @vite([
+            'resources/css/app.css',
+        ])
+
     </head>
     <body class="font-sans antialiased">
-        @livewireScriptConfig
 
         <x-banner />
 
@@ -42,7 +36,7 @@
             <!-- Page Heading -->
             @if (isset($header))
                 <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-7xl mx-auto py-2 px-2 sm:px-2 lg:px-4">
                         {{ $header }}
                     </div>
                 </header>
@@ -59,6 +53,14 @@
         @if (isset($script))
             {{ $script }}
         @endif
+        <!-- Scripts -->
+        @livewireScriptConfig
+        @vite([
+            'resources/js/jquery.js',
+            'resources/js/bootstrap.js',
+            'resources/js/bootstrap_components.js',
+            'resources/js/app.js',
+        ])
 
     </body>
 </html>

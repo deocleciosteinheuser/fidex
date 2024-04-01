@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('home') }}">
+                    <a class="no-underline" href="{{ route('home') }}">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
@@ -28,7 +28,7 @@
                             </x-slot>
                             <x-slot name="content">
                                 @foreach(\App\Http\Controllers\ConsultaController::agrupadores() as $item)
-                                    <x-dropdown-link href="{{ route('consultas.' . $item['route']) }}">
+                                    <x-dropdown-link href="{{ route('consultas', ['agrupador' => $item['route']])  }}">
                                         {{ __($item['title']) }}
                                     </x-dropdown-link>
                                 @endforeach
@@ -47,7 +47,7 @@
                         </x-slot>
                         <x-slot name="content">
                             @foreach(\App\Http\Controllers\ConsultaController::agrupadores() as $item)
-                                <x-dropdown-link href="{{ route('cards.' . $item['route']) }}">
+                                <x-dropdown-link href="{{ route('cards', ['agrupador' => $item['route']]) }}" wire:navigate>
                                     {{ __($item['title']) }}
                                 </x-dropdown-link>
                             @endforeach
@@ -182,8 +182,8 @@
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('consultas.usuario') }}" :active="request()->routeIs('consultas.usuario')">
-                {{ __('consultas.usuario') }}
+            <x-responsive-nav-link href="{{ route('consultas',['agrupador' => 'usuario']) }}" :active="request()->routeIs('consultas')">
+                {{ __('consultas') }}
             </x-responsive-nav-link>
         </div>
 

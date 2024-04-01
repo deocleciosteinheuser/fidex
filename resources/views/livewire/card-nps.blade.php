@@ -1,4 +1,4 @@
-<div class="d-flex flex-wrap">
+<div>
     <script>
           var cardNps = new function() {
             var canvas;
@@ -53,89 +53,91 @@
             }
         }
     </script>
-    @foreach ($dados as $key => $oDado)
-    <div class="card text-black bg-light" style="max-width: 21rem;" wire:key="card-nps-{{ $key }}">
-        <h5 class="card-header">{{ $oDado->agrupador }}</h5>
-        <div class="card-body">
-            <table class="table-light text-black bg-light" style="max-width: 28rem;">
-                <tbody>
-                    <tr>
-                        <td>
-                            <span id="npsCanvas{{ $key }}-nota_nps" class="visually-hidden">{{ $oDado->nota_nps }}</span>
-                            <canvas id="npsCanvas{{ $key }}" width="100" height="100"
-                                x-data="{
-                                    initialize: () => {
-                                        cardNps.render(
-                                            document.getElementById('npsCanvas{{ $key }}'),
-                                            parseInt(document.getElementById('npsCanvas{{ $key }}-detrator').textContent),
-                                            parseInt(document.getElementById('npsCanvas{{ $key }}-neutro').textContent),
-                                            parseInt(document.getElementById('npsCanvas{{ $key }}-promotor').textContent),
-                                            parseInt(document.getElementById('npsCanvas{{ $key }}-nota_nps').textContent)
-                                        );
-                                        return true;
-                                    }
-                                }"
+    <div class="grid bg-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h gap-x-2 gap-y-2">
+        @foreach ($dados as $key => $oDado)
+        <div class="card text-black bg-light" style="max-width: 21rem;" wire:key="card-nps-{{ $key }}">
+            <h5 class="card-header">{{ $oDado->agrupador }}</h5>
+            <div class="card-body">
+                <table class="table-light text-black bg-light" style="max-width: 28rem;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span id="npsCanvas{{ $key }}-nota_nps" class="visually-hidden">{{ $oDado->nota_nps }}</span>
+                                <canvas id="npsCanvas{{ $key }}" width="100" height="100"
+                                    x-data="{
+                                        initialize: () => {
+                                            cardNps.render(
+                                                document.getElementById('npsCanvas{{ $key }}'),
+                                                parseInt(document.getElementById('npsCanvas{{ $key }}-detrator').textContent),
+                                                parseInt(document.getElementById('npsCanvas{{ $key }}-neutro').textContent),
+                                                parseInt(document.getElementById('npsCanvas{{ $key }}-promotor').textContent),
+                                                parseInt(document.getElementById('npsCanvas{{ $key }}-nota_nps').textContent)
+                                            );
+                                            return true;
+                                        }
+                                    }"
 
-                                x-show="initialize()"
-                            ></canvas>
-                        </td>
-                        <td>
-                            <table class="table-light bg-light">
-                                <tr>
-                                    <td>
-                                        <span class="badge bg-danger d-flex">Detrator</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-danger d-flex">{{ $oDado->respostas_detrator }}</span>
-                                    </td>
-                                    <td>
-                                        <span id="npsCanvas{{ $key }}-detrator" class="badge bg-danger d-flex">{{ $oDado->detrator }}%</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="badge bg-warning d-flex">Neutro</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-warning d-flex">{{ $oDado->detrator }}</span>
-                                    </td>
-                                    <td>
-                                        <span id="npsCanvas{{ $key }}-neutro" class="badge bg-warning d-flex">{{ $oDado->neutro }}%</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="badge bg-success d-flex">Promotor</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-success d-flex">{{ $oDado->respostas_promotor }}</span>
-                                    </td>
-                                    <td>
-                                        <span id="npsCanvas{{ $key }}-promotor" class="badge bg-success d-flex">{{ $oDado->promotor }}%</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td>
-                            <table class="table-light">
-                                <tr>
-                                    <td>
-                                        <span class="badge bg-dark">Total</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="badge bg-dark" style="border-radius: 50%; width: 40px; height: 40px; justify-content: center; align-items: center; display: flex;">
-                                            <span class="fs-6">{{ $oDado->total_resposta }}</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                    x-show="initialize()"
+                                ></canvas>
+                            </td>
+                            <td>
+                                <table class="table-light bg-light">
+                                    <tr>
+                                        <td>
+                                            <span class="badge bg-danger d-flex">Detrator</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-danger d-flex">{{ $oDado->respostas_detrator }}</span>
+                                        </td>
+                                        <td>
+                                            <span id="npsCanvas{{ $key }}-detrator" class="badge bg-danger d-flex">{{ $oDado->detrator }}%</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="badge bg-warning d-flex">Neutro</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-warning d-flex">{{ $oDado->detrator }}</span>
+                                        </td>
+                                        <td>
+                                            <span id="npsCanvas{{ $key }}-neutro" class="badge bg-warning d-flex">{{ $oDado->neutro }}%</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="badge bg-success d-flex">Promotor</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-success d-flex">{{ $oDado->respostas_promotor }}</span>
+                                        </td>
+                                        <td>
+                                            <span id="npsCanvas{{ $key }}-promotor" class="badge bg-success d-flex">{{ $oDado->promotor }}%</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <table class="table-light">
+                                    <tr>
+                                        <td>
+                                            <span class="badge bg-dark">Total</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="badge bg-dark" style="border-radius: 50%; width: 40px; height: 40px; justify-content: center; align-items: center; display: flex;">
+                                                <span class="fs-6">{{ $oDado->total_resposta }}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        @endforeach
     </div>
-    @endforeach
 </div>

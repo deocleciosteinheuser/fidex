@@ -8,6 +8,7 @@ use Livewire\Component;
 
 class CardNps extends Component
 {
+    public $agrupador;
     public $dados;
     public $filtro;
     public $listeners = [
@@ -16,7 +17,8 @@ class CardNps extends Component
 
     public function mount()
     {
-        $this->dados = (new ConsultaUsuarioController())->json();
+        //dd($this->agrupador);
+        $this->dados = (new ("App\\Http\\Controllers\\Consulta" . ucwords($this->agrupador) . "Controller")())->json();
     }
 
     public function render()
@@ -27,6 +29,6 @@ class CardNps extends Component
 
     public function filterNps($aFiltro)
     {
-        $this->dados = (new ConsultaUsuarioController())->json(array_filter($aFiltro));
+        $this->dados = (new ("App\\Http\\Controllers\\Consulta" . ucwords($this->agrupador) . "Controller")())->json(array_filter($aFiltro));
     }
 }

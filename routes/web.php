@@ -40,34 +40,15 @@ Route::middleware([
     })->name('dashboard');
     Route::get('/home', [AppController::class, 'index'])->name('home');
 
-    Route::get('/consultas/usuario/{dados}', [ConsultaUsuarioController::class, 'dados'])->name('usuario.dados');
-    Route::get('/consultas/geo/{dados}', [ConsultaGeoController::class, 'dados'])->name('geo.dados');
-    Route::get('/consultas/categoria/{dados}', [ConsultaCategoriaController::class, 'dados'])->name('categoria.dados');
-    Route::get('/consultas/periodo/{dados}', [ConsultaPeriodoController::class, 'dados'])->name('periodo.dados');
-    Route::get('/consultas/sistema/{dados}', [ConsultaSistemaController::class, 'dados'])->name('sistema.dados');
-    Route::get('/consultas/cliente/{dados}', [ConsultaClienteController::class, 'dados'])->name('cliente.dados');
-    Route::get('/consultas/unidade/{dados}', [ConsultaUnidadeController::class, 'dados'])->name('unidade.dados');
-    Route::get('/consultas/servidor/{dados}', [ConsultaServidorController::class, 'dados'])->name('servidor.dados');
+    Route::get('/dados/{agrupador}/{tipo}', [ConsultaController::class, 'dados'])->name('dados');
 
-    Route::get('/consultas/usuario'        , [ConsultaUsuarioController::class, 'index'])->name('consultas.usuario');
-    Route::get('/consultas/geo'        , [ConsultaGeoController::class, 'index'])->name('consultas.geo');
-    Route::get('/consultas/categoria'        , [ConsultaCategoriaController::class, 'index'])->name('consultas.categoria');
-    Route::get('/consultas/periodo'        , [ConsultaPeriodoController::class, 'index'])->name('consultas.periodo');
-    Route::get('/consultas/sistema'        , [ConsultaSistemaController::class, 'index'])->name('consultas.sistema');
-    Route::get('/consultas/cliente'        , [ConsultaClienteController::class, 'index'])->name('consultas.cliente');
-    Route::get('/consultas/unidade'        , [ConsultaUnidadeController::class, 'index'])->name('consultas.unidade');
-    Route::get('/consultas/servidor'        , [ConsultaServidorController::class, 'index'])->name('consultas.servidor');
+    Route::get('/consultas/{agrupador}' , [ConsultaController::class, 'index'])->name('consultas');
 
-    Route::get('/cards/usuario'    , [DashboardController::class, 'usuario'])->name('cards.usuario');
-    Route::get('/cards/geo'        , [DashboardController::class, 'geo'])->name('cards.geo');
-    Route::get('/cards/categoria'  , [DashboardController::class, 'categoria'])->name('cards.categoria');
-    Route::get('/cards/periodo'    , [DashboardController::class, 'periodo'])->name('cards.periodo');
-    Route::get('/cards/sistema'    , [DashboardController::class, 'sistema'])->name('cards.sistema');
-    Route::get('/cards/cliente'    , [DashboardController::class, 'cliente'])->name('cards.cliente');
-    Route::get('/cards/unidade'    , [DashboardController::class, 'unidade'])->name('cards.unidade');
-    Route::get('/cards/servidor'   , [DashboardController::class, 'servidor'])->name('cards.servidor');
+    Route::get('/cards/{agrupador}'    , [DashboardController::class, 'index'])->name('cards');
 
-    Route::get('/dashboard/nps', [DashboardController::class, 'index'])->name('dashboard.nps');
-    Route::get('/dashboard/mrr', [DashboardController::class, 'index'])->name('dashboard.mrr');
+});
 
+
+Route::get('/teste', function () {
+    return view('tailwind-test');
 });

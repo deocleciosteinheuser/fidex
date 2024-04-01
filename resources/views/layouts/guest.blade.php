@@ -22,6 +22,10 @@
             {{ $slot }}
         </div>
 
-        @livewireScripts
+        @livewireScriptConfig
+        @vite([
+            'resources/js/jquery.js',
+            'resources/js/app.js',
+        ])
     </body>
 </html>

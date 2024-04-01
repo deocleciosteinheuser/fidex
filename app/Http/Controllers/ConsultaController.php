@@ -4,21 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Enums\ConsultaAgrupador;
 use App\View\Components\Consulta;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ConsultaController extends Controller
 {
     private $order = [];
     private $limit = 0;
-    private $user;
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($agrupador)
     {
-        return $this->getConsulta()->render();
+        $constante = "App\Enums\ConsultaAgrupador::" . Str::upper($agrupador);
+        return $this->getConsulta()->setAgrupador(constant($constante))->render();
     }
 
     protected function getConsulta() {
@@ -37,10 +37,13 @@ class ConsultaController extends Controller
         return $aReturn;
     }
 
-    public function dados($tipo) {
+    public function dados($agrupador, $tipo) {
+        $constante = "App\Enums\ConsultaAgrupador::" . Str::upper($agrupador);
         switch($tipo) {
             case 'json' :
-                return $this->json();
+                return (new ("App\\Http\\Controllers\\Consulta" . ucwords($agrupador) . "Controller")())->json();
+            default:
+                return '';
         }
     }
 
@@ -55,8 +58,6 @@ class ConsultaController extends Controller
                    pessoa.id AS id,
                    nps_resposta.npsnota
               FROM unidade_sistema
-              JOIN pessoa
-                ON pessoa.id = unidade_sistema.pesid
               JOIN nps_pesquisa_unidade_sistema
                 ON nps_pesquisa_unidade_sistema.uniid = unidade_sistema.uniid
                AND nps_pesquisa_unidade_sistema.sisid = unidade_sistema.sisid
@@ -64,6 +65,8 @@ class ConsultaController extends Controller
                 ON nps_pesquisa_usuario.npuid = nps_pesquisa_unidade_sistema.id
               JOIN nps_resposta
                 ON nps_resposta.npuid = nps_pesquisa_usuario.id
+              JOIN pessoa ON pessoa.id = unidade_sistema.pesid
+              JOIN geo_localizacao geo ON geo.id = nps_pesquisa_unidade_sistema.geoid
              WHERE TRUE
         ";
 
@@ -71,11 +74,15 @@ class ConsultaController extends Controller
 
     public function json($filter = []) {
         $sFiltro = '';
+        $sFiltroAgrupador = '';
         $aValoresFiltro = [];
         foreach($filter  as $key => $value) {
-            ;
-            $sFiltro .= " AND $key in(" . implode(',',array_map(function(){return '?';}, is_array($value) ? $value : [$value])) . ") \n";
-            $aValoresFiltro = array_values(array_merge($aValoresFiltro, is_array($value) ? $value : [$value]));
+            if($key == 'agrupador') {
+               $sFiltroAgrupador = " AND agrupador ILIKE :{$key}";
+               $aValoresFiltro[$key] = "%$value%";
+            } else {
+               $sFiltro .= " AND $key in(" . implode(',' ,$value) . ") \n";
+            }
         }
         return DB::select("
         WITH parametros AS (
@@ -96,6 +103,8 @@ class ConsultaController extends Controller
                         COUNT(*)::numeric AS respostas
                    FROM dados
              CROSS JOIN parametros
+                  WHERE TRUE
+                  {$sFiltroAgrupador}
                GROUP BY dados.agrupador
              ),
              calculo AS (
